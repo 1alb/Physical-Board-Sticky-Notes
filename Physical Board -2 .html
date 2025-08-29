@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Whiteboard with Sticky Notes</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f9;
+      margin: 20px;
+    }
+    h2 {
+      text-align: center;
+      color: #333;
+    }
+    .board {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      margin-top: 20px;
+    }
+    .column {
+      background: #fff;
+      border: 2px solid #ddd;
+      border-radius: 10px;
+      width: 30%;
+      padding: 10px;
+      min-height: 300px;
+    }
+    .column h3 {
+      text-align: center;
+      margin-bottom: 10px;
+    }
+    .sticky {
+      background: #fffa8b;
+      padding: 10px;
+      margin: 5px 0;
+      border-radius: 5px;
+      cursor: grab;
+    }
+    #addNote {
+      display: block;
+      margin: 0 auto;
+      padding: 10px 20px;
+      background: #007bff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    #addNote:hover {
+      background: #0056b3;
+    }
+    table {
+      margin: 30px auto;
+      border-collapse: collapse;
+      width: 90%;
+    }
+    table, th, td {
+      border: 1px solid #aaa;
+    }
+    th, td {
+      padding: 10px;
+      text-align: center;
+    }
+    th {
+      background: #007bff;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <h2>📌 Whiteboard with Sticky Notes</h2>
+  <button id="addNote">➕ Add Sticky Note</button>
+
+  <div class="board">
+    <div class="column" ondrop="drop(event)" ondragover="allowDrop(event)">
+      <h3>Start</h3>
+    </div>
+    <div class="column" ondrop="drop(event)" ondragover="allowDrop(event)">
+      <h3>In Progress</h3>
+    </div>
+    <div class="column" ondrop="drop(event)" ondragover="allowDrop(event)">
+      <h3>Completed</h3>
+    </div>
+  </div>
+
+  <h2>📊 Which Tool Should You Choose?</h2>
+  <table>
+    <tr>
+      <th>Tool</th>
+      <th>Best For</th>
+      <th>Ease of Use</th>
+      <th>Code Integration</th>
+    </tr>
+    <tr>
+      <td>GitHub Projects</td>
+      <td>Keeping code and tasks together.</td>
+      <td>Medium</td>
+      <td>Excellent</td>
+    </tr>
+    <tr>
+      <td>Trello</td>
+      <td>Simplicity and visual tracking.</td>
+      <td>Very Easy</td>
+      <td>Poor (Needs Add-ons)</td>
+    </tr>
+    <tr>
+      <td>Whiteboard</td>
+      <td>In-person collaboration and simplicity.</td>
+      <td>Easiest</td>
+      <td>None</td>
+    </tr>
+  </table>
+
+  <script>
+    let noteCount = 1;
+
+    document.getElementById("addNote").addEventListener("click", function() {
+      let note = document.createElement("div");
+      note.className = "sticky";
+      note.textContent = "Sticky Note " + noteCount++;
+      note.draggable = true;
+      note.ondragstart = drag;
+      document.querySelector(".column").appendChild(note);
+    });
+
+    function allowDrop(ev) {
+      ev.preventDefault();
+    }
+
+    function drag(ev) {
+      ev.dataTransfer.setData("text", ev.target.id);
+      dragged = ev.target;
+    }
+
+    function drop(ev) {
+      ev.preventDefault();
+      ev.target.closest(".column").appendChild(dragged);
+    }
+
+    let dragged;
+  </script>
+</body>
+</html>
